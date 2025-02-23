@@ -3,6 +3,7 @@
 use App\Exceptions\Forbidden;
 use App\Exceptions\Unauthorized;
 use App\Exceptions\ValidationErrors;
+use App\Http\Middleware\UserHasRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,7 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'user_has_role' => UserHasRole::class,
+        ]);
     })
     ->withEvents(discover: [
         __DIR__ . '/../app/Listeners',
