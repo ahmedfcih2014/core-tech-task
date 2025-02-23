@@ -7,6 +7,7 @@ use App\Exceptions\Unauthorized;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Api\Auth\LoginResource;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,10 @@ class AuthController extends ApiController
 {
     public function register(RegisterRequest $registerRequest)
     {
-        $user = User::create($registerRequest->validated());
+        $user = User::create([
+            ...$registerRequest->validated(),
+            'role_id' => Role::userRole()->id,
+        ]);
         Event::dispatch(new Registered($user));
         return $this->success(['message' => 'You have registered successfully, go to login']);
     }
