@@ -15,5 +15,5 @@
     -   MAIL_PASSWORD=your-password
 -   got to the project directory: cd /root/path/to/repo
 -   run this command: composer install
--   run this command: php artisan migrate
+-   run this command: php artisan migrate --seed
 -   for running the queue you must run: php artisan queue:work
