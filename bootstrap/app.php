@@ -2,6 +2,7 @@
 
 use App\Exceptions\Forbidden;
 use App\Exceptions\Unauthorized;
+use App\Exceptions\ValidationErrors;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,12 +18,14 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })
-    ->withExceptions(function (Unauthorized $exception) {
-        return $exception->render();
-    })
-    ->withExceptions(function (Forbidden $exception) {
-        return $exception->render();
+        $exceptions->report(function (Unauthorized $exception) {
+            return $exception->render();
+        })->stop();
+        $exceptions->report(function (Forbidden $exception) {
+            return $exception->render();
+        })->stop();
+        $exceptions->report(function (ValidationErrors $exception) {
+            return $exception->render();
+        })->stop();
     })
     ->create();
