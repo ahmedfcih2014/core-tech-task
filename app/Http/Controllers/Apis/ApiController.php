@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Apis;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class ApiController extends Controller
@@ -41,5 +42,10 @@ class ApiController extends Controller
         return response()->json([
             'message' => $message ?? "Something went wrong"
         ], 400);
+    }
+
+    protected function loggedInUser(): User
+    {
+        return auth('sanctum')->user();
     }
 }
